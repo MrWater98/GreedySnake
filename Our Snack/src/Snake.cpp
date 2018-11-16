@@ -98,7 +98,7 @@ void Snake::walk()
             cout<<"Your Score is "<<point*10<<endl;
         }
         //如果接受到键盘
-
+        /*
         if(kbhit())
         {
             //令direction变成接收到键盘的值
@@ -107,12 +107,12 @@ void Snake::walk()
             temp=getch();
             if (abs(direction-temp)!=2 && abs(direction-temp)!=8)
                 direction = temp;
-        }
-        Sleep(30);
-
-        Sleep(30);
-        SetCursorPosition(30,9);
-        cout<<direction;
+        }*/
+        //Sleep(30);
+        direction = getScore();//给direction赋值
+        //Sleep(30);
+        //SetCursorPosition(30,9);
+        //cout<<direction;
         switch(direction)
         {
         //77代表右方向
@@ -163,4 +163,44 @@ bool Snake::isOnSnake(pair<short,short> p)
             return true;
     }
     return false;
+}
+int Snake::getScore()
+{
+    //1、获取蛇头
+    pair<short,short> snakeHead = snake.front();
+    //2、定义一个上下左右数组
+    pair<short,short> dir[4];
+    //上
+    dir[0] = pair<short,short>(snakeHead.first,snakeHead.second-1);
+    //下
+    dir[1] = pair<short,short>(snakeHead.first,snakeHead.second+1);
+    //左
+    dir[2] = pair<short,short>(snakeHead.first-1,snakeHead.second);
+    //右
+    dir[3] = pair<short,short>(snakeHead.first+1,snakeHead.second);
+
+    //3、定义一个上下左右 分数的数组
+
+    int Score[4] = {INT_MAX,INT_MAX,INT_MAX,INT_MAX};
+
+    //4、根据勾股定理获得分数
+    for(int i = 0;i < 4;i++)
+    {
+        //判断那个点在不在蛇身上？如果没有在蛇身上
+        if(!isOnSnake(dir[i]))
+        {
+            Score[i] = pow(dir[i].first-foodx,2)+pow(dir[i].second-foody,2);
+        }
+    }
+    //5、定义一个  上->72 下->80 左->75 右->77
+    int dirToNum[4] = {72,80,75,77};
+    //6、找到Score中4个数中最小的那个
+    int Min = INT_MAX;
+    for(int i = 0;i < 4;i++)
+        Min = min(Min,Score[i]);
+    //找到最小的那个的下标
+    for(int i = 0;i < 4;i++)
+        if(Min==Score[i])
+            return dirToNum[i];
+    return 77;
 }
