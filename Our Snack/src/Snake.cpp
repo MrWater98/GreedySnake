@@ -20,7 +20,7 @@ Snake::Snake()
     snake.push_back(pair<short,short>(15,14));
     snake.push_back(pair<short,short>(14,14));
     foodx=0;
-    foody=0;
+    foody=0;//改成pair
     foodCreate();
 }
 
@@ -69,7 +69,7 @@ void Snake::print()
         SetCursorPosition(i.first,i.second);
         cout<<"●";
     }
-    Sleep(10);
+    Sleep(50);
 }
 bool Snake::check()
 {
@@ -109,11 +109,11 @@ void Snake::walk()
                 direction = temp;
         }*/
         //Sleep(30);
-        direction = getScore();//给direction赋值
+        direction = getScore();
         //Sleep(30);
         //SetCursorPosition(30,9);
         //cout<<direction;
-        switch(direction)
+        switch(direction)//运动这里看看能不能封装一下，弄成静态全局函数
         {
         //77代表右方向
         case 77:
@@ -180,14 +180,14 @@ int Snake::getScore()
     dir[3] = pair<short,short>(snakeHead.first+1,snakeHead.second);
 
     //3、定义一个上下左右 分数的数组
-
+    //int Score[4]={9999999,99999999,99999999,99999999};
     int Score[4] = {INT_MAX,INT_MAX,INT_MAX,INT_MAX};
 
     //4、根据勾股定理获得分数
     for(int i = 0;i < 4;i++)
     {
         //判断那个点在不在蛇身上？如果没有在蛇身上
-        if(!isOnSnake(dir[i]))
+        if(!isOnSnake(dir[i])&&head_find(snake,dir[i]))
         {
             Score[i] = pow(dir[i].first-foodx,2)+pow(dir[i].second-foody,2);
         }
@@ -202,5 +202,75 @@ int Snake::getScore()
     for(int i = 0;i < 4;i++)
         if(Min==Score[i])
             return dirToNum[i];
+
     return 77;
 }
+
+
+//是否会进入出不来的情况，测试函数，不用理会
+bool head_find(deque<pair<short,short> > _snake,pair<short,short> dir)
+{
+    short Count = 0;
+    //向右
+    for(int i = dir.first;i<=25;i++)
+    {
+        bool breakIndex = false;
+        for(auto &j:_snake)
+        {
+            if(i==j.first&&dir.second==j.second){
+                ++Count;
+                breakIndex = true;
+                break;
+            }
+        }
+        if(breakIndex)
+            break;
+    }
+    //向左
+    for(int i = dir.first;i>=0;i--)
+    {
+        bool breakIndex = false;
+        for(auto &j:_snake)
+        {
+            if(i==j.first&&dir.second==j.second){
+                ++Count;
+                breakIndex = true;
+                break;
+            }
+        }
+        if(breakIndex)
+            break;
+    }
+    //向下
+    for(int i = dir.second;i<=25;i++)
+    {
+        bool breakIndex = false;
+        for(auto &j:_snake)
+        {
+            if(dir.first==j.first&&i==j.second){
+                ++Count;
+                breakIndex = true;
+                break;
+            }
+        }
+        if(breakIndex)
+            break;
+    }
+    //向上
+    for(int i = dir.second;i>=0;i--)
+    {
+        bool breakIndex = false;
+        for(auto &j:_snake)
+        {
+            if(dir.first==j.first&&i==j.second){
+                ++Count;
+                breakIndex = true;
+                break;
+            }
+        }
+        if(breakIndex)
+            break;
+    }
+    return Count!=4;
+}
+
