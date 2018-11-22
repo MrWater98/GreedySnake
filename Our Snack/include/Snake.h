@@ -2,7 +2,7 @@
 #define SNAKE_H
 #include<iostream>
 #include<deque>
-
+#include<map>
 using namespace std;
 class Snake
 {
@@ -15,6 +15,8 @@ class Snake
         int direction = 77;
         //∞—foodx∫Õfoody–¥≥…pair<short,short> food;
         bool isOnSnake(pair<short,short> p);
+        bool FindTail(pair<short,short> curPos);
+        map<pair<short,short>,bool> revSnake;
         int makeScore();
         int getScore();
         void print();
