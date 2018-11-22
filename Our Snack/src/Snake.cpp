@@ -51,7 +51,9 @@ void Snake::foodCreate()
 void Snake::printFood()
 {
     SetCursorPosition(foodx,foody);
+    SetColor(4);
     cout<<"●";
+    SetColor(7);
     SetCursorPosition(0,28);
     cout<<"                             ";
     SetCursorPosition(0,28);
@@ -279,12 +281,13 @@ bool Snake::FindTail(pair<short,short> _curPos)
     memset(snakePos,0,sizeof(snakePos));
     memset(isWalk,0,sizeof(isWalk));
     pair<short,short> dir[8] = {make_pair(0,1),make_pair(1,0),make_pair(0,-1),
-    make_pair(-1,0),make_pair(1,1),make_pair(1,-1),make_pair(-1,1),make_pair(-1,-1)};
-    pair<short,short> _dir[4] = {make_pair(0,1),make_pair(1,0),make_pair(0,-1),make_pair(-1,0)};
+                                make_pair(-1,0),make_pair(1,1),make_pair(1,-1),make_pair(-1,1),make_pair(-1,-1)
+                               };
+    //pair<short,short> _dir[4] = {make_pair(0,1),make_pair(1,0),make_pair(0,-1),make_pair(-1,0)};
     pair<short,short> curPos = _curPos;
     for(auto &i : snake)
     {
-        for(int j = 0;j < 8;j++)
+        for(int j = 0; j < 8; j++)
         {
             snakePos[i.first+dir[j].first][i.second+dir[j].second] = true;
         }
@@ -292,43 +295,61 @@ bool Snake::FindTail(pair<short,short> _curPos)
     for(auto &i:snake)
     {
         //if(i!=*snake.end())
-            snakePos[i.first][i.second] = false;
+        snakePos[i.first][i.second] = false;
     }
-    for(int i = 0;i<=25;i++)snakePos[i][0] = false;
-    for(int i = 0;i<=25;i++)snakePos[i][25] = false;
-    for(int i = 0;i<=25;i++)snakePos[0][i] = false;
-    for(int i = 0;i<=25;i++)snakePos[25][i] = false;
+    for(int i = 0; i<=25; i++)
+        snakePos[i][0] = false;
+    for(int i = 0; i<=25; i++)
+        snakePos[i][25] = false;
+    for(int i = 0; i<=25; i++)
+        snakePos[0][i] = false;
+    for(int i = 0; i<=25; i++)
+        snakePos[25][i] = false;
     isWalk[curPos.first][curPos.second] = true;
     bool continueWalk = true;
 
-    /*
-    for(int i = 0;i < 26;i++)
+    //打印凹陷表
+    if(kbhit())
     {
-        for(int j = 0;j < 26;j++)
+        char temp = getch();
+        if(temp=='r'){
+        for(int i = 0; i < 26; i++)
         {
-            SetCursorPosition(i+26,j);
-            cout<<snakePos[i][j];
+            for(int j = 0; j < 26; j++)
+            {
+                SetCursorPosition(i+26,j);
+                if(snakePos[i][j])
+                {
+                    SetColor(4);
+                    cout<<snakePos[i][j];
+                    SetColor(7);
+                }else
+                    cout<<snakePos[i][j];
+            }
+            cout<<endl;
         }
-        cout<<endl;
+        }
     }
-    */
+
 
     queue<pair<short,short> > q;
     q.push(curPos);
     while(!q.empty())
     {
         curPos = q.front();
+        /*
         SetCursorPosition(0,26);
         cout<<"                          ";
         SetCursorPosition(0,26);
         cout<<curPos.first<<" "<<curPos.second<<endl;
+        */
 
-        for(int i = 0;i < 4;i++)
+        for(int i = 0; i < 4; i++)
         {
             if(snake.back()==pair<short,short>(q.front().first+dir[i].first,q.front().second+dir[i].second))
                 return true;
         }
-        for(int i = 0;i<4;i++)
+        for(int i = 0; i<4; i++)
         {
             if(snakePos[curPos.first+dir[i].first][curPos.second+dir[i].second]&&!isWalk[curPos.first+dir[i].first][curPos.second+dir[i].second])
             {
@@ -369,12 +390,13 @@ bool head_find(deque<pair<short,short> > _snake,pair<short,short> dir)
 {
     short Count = 0;
     //向右
-    for(int i = dir.first;i<=25;i++)
+    for(int i = dir.first; i<=25; i++)
     {
         bool breakIndex = false;
         for(auto &j:_snake)
         {
-            if(i==j.first&&dir.second==j.second){
+            if(i==j.first&&dir.second==j.second)
+            {
                 ++Count;
                 breakIndex = true;
                 break;
@@ -384,12 +406,13 @@ bool head_find(deque<pair<short,short> > _snake,pair<short,short> dir)
             break;
     }
     //向左
-    for(int i = dir.first;i>=0;i--)
+    for(int i = dir.first; i>=0; i--)
     {
         bool breakIndex = false;
         for(auto &j:_snake)
         {
-            if(i==j.first&&dir.second==j.second){
+            if(i==j.first&&dir.second==j.second)
+            {
                 ++Count;
                 breakIndex = true;
                 break;
@@ -399,12 +422,13 @@ bool head_find(deque<pair<short,short> > _snake,pair<short,short> dir)
             break;
     }
     //向下
-    for(int i = dir.second;i<=25;i++)
+    for(int i = dir.second; i<=25; i++)
     {
         bool breakIndex = false;
         for(auto &j:_snake)
         {
-            if(dir.first==j.first&&i==j.second){
+            if(dir.first==j.first&&i==j.second)
+            {
                 ++Count;
                 breakIndex = true;
                 break;
@@ -414,12 +438,13 @@ bool head_find(deque<pair<short,short> > _snake,pair<short,short> dir)
             break;
     }
     //向上
-    for(int i = dir.second;i>=0;i--)
+    for(int i = dir.second; i>=0; i--)
     {
         bool breakIndex = false;
         for(auto &j:_snake)
         {
-            if(dir.first==j.first&&i==j.second){
+            if(dir.first==j.first&&i==j.second)
+            {
                 ++Count;
                 breakIndex = true;
                 break;
