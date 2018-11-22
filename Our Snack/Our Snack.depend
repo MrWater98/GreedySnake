@@ -146,9 +146,10 @@
 1541301870 d:\子越文档\onedrive - 广厚设计学校\大学\课程\自学\github\greedysnake\our snack\include\food.h
 	<utility>
 
-1542340177 d:\子越文档\onedrive - 广厚设计学校\大学\课程\自学\github\greedysnake\our snack\include\snake.h
+1542852534 d:\子越文档\onedrive - 广厚设计学校\大学\课程\自学\github\greedysnake\our snack\include\snake.h
 	<iostream>
 	<deque>
+	<map>
 
 1542369464 source:d:\子越文档\onedrive - 广厚设计学校\大学\课程\自学\github\greedysnake\our snack\src\gamestate.cpp
 	"GameState.h"
@@ -170,4 +171,20 @@
 1542036311 source:d:\子越文档\onedrive - 广厚设计学校\大学\课程\自学\github\greedysnake\our snack\src\tool.cpp
 	"Tool.h"
 	"windows.h"
+
+1542860151 source:d:\子越文档\onedrive - 广厚设计学校\大学\课程\自学\github\greedysnake\our snack\src\snake.cpp
+	"Snake.h"
+	"Tool.h"
+	<deque>
+	"conio.h"
+	<windows.h>
+	"stdio.h"
+	"Food.h"
+	<string.h>
+	<limits.h>
+	<stdlib.h>
+	<map>
+	<queue>
+	<time.h>
+	<cmath>
 
